@@ -1,0 +1,6 @@
+{
+  "posts": [
+    { "id": 1, "title": "Trabalho 2 Quasar-Vue", "author": "Gustavo Perin", "content": "Odeio Vue e Quasar" },
+    { "id": 2, "title": "segundo item", "author": "Gustavo Perin", "content": "Odeio MUITOOOOO Vue e Quasar" }
+  ]
+}
