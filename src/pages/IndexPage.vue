@@ -66,7 +66,7 @@ export default defineComponent({
   },
   methods: {
     detailsClick(pokemonName: string) {        
-      this.$router.push({ path: "/details" + "/" + pokemonName, params: { name: pokemonName } });
+      this.$router.push({ path: '/details' + '/' + pokemonName, params: { name: pokemonName } });
     },
     likeClick(){
       alert('Liked!');
@@ -78,34 +78,28 @@ export default defineComponent({
 })
 
 const { list } = postsService('')
-let registers: any
-try {         
-  registers = await list()      
-} catch(error) {
-  console.log(error)
-}  
 
 export const dataStore = defineStore('dataStore', {
   state: () => ({
-    registers: registers,
     numberOfPages: 1
   }),
   actions: {
-    getPaginetedRegisters(pageSize: number, pageNumber: number, sortBy: string): Register[] {
-      const currentNumberOfPages = Math.floor(this.registers.length / pageSize)
+    async getPaginetedRegisters(pageSize: number, pageNumber: number, sortBy: string): Register[] {
+      const registers = await list()
+      const currentNumberOfPages = Math.floor(registers.length / pageSize)
       const firstIndex = pageNumber * pageSize
       const lastIndex =
-        (pageNumber + 1) * pageSize > this.registers.length
-          ? this.registers.length
+        (pageNumber + 1) * pageSize > registers.length
+          ? registers.length
           : (pageNumber + 1) * pageSize
       this.numberOfPages = currentNumberOfPages
       if (sortBy === 'Data')
-        return this.registers.slice().sort(sortDateColumn).slice(firstIndex, lastIndex)
-      else if (sortBy === 'NaoOrdenar') return this.registers.slice().slice(firstIndex, lastIndex)
-      return this.registers.slice().sort(sortStringColumn(sortBy)).slice(firstIndex, lastIndex)
+        return registers.slice().sort(sortDateColumn).slice(firstIndex, lastIndex)
+      else if (sortBy === 'NaoOrdenar') return registers.slice().slice(firstIndex, lastIndex)
+      return registers.slice().sort(sortStringColumn(sortBy)).slice(firstIndex, lastIndex)
     },  
     searchByName(name: string): Register[] {
-      return this.registers.filter((register: Register) => register.name.includes(name))
+      return registers.filter((register: Register) => register.name.includes(name))
     }
   }
 })
